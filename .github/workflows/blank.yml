@@ -1,5 +1,9 @@
-name: Code Checks
+# This is a basic workflow to help you get started with Actions
 
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
 on:
   push:
     branches: [ master ]
@@ -16,13 +20,13 @@ jobs:
     name: Go ${{ matrix.go }} sample
     steps:
       - uses: actions/checkout@v2
-      - name: golangci-lint
-         uses: golangci/golangci-lint-action@v1
-         with:
-            version: v1.28
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v1
+        with:
+         version: v1.28
       - uses: actions/checkout@v2
-      - name: Run tests
-         uses: actions/setup-go@v1
-         with:
-            go-version: ${{ matrix.go }}
+      - name: Setup go
+        uses: actions/setup-go@v1
+        with:
+          go-version: ${{ matrix.go }}
       - run: make code_test
