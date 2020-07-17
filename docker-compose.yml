@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+   tservice:
+      container_name: tservice
+      build: .
+      ports:
+         - "8080:8080"
+      networks:
+         app_net:
+
+networks:
+   app_net:
+      driver: bridge
