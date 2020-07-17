@@ -22,7 +22,7 @@ code_format: ## - Format code
 
 .PHONY: code_lint
 code_lint: ## - Run a linter
-	(which golangci-lint || $(GOCMDWITHOUTMODULES) get github.com/golangci/golangci-lint/cmd/golangci-lint)
+	(which golangci-lint || GO111MODULE=on $(GOCMD) get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.24.0)
 	golangci-lint run	
 
 .PHONY: code_coverage
