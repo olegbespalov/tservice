@@ -24,5 +24,8 @@ func (ts *tservice) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	log.Println(string(requestDump))
 
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"status": "ok"}`))
+	_, err = w.Write([]byte(`{"status": "ok"}`))
+	if err != nil {
+		log.Println("ERR: " + err.Error())
+	}
 }
