@@ -3,10 +3,14 @@ package entity
 import (
 	"log"
 	"net/http"
+	"time"
+
+	"github.com/olegbespalov/tservice/internal/parser"
 )
 
 //Response represent what exactly will be returneds
 type Response struct {
+	wait       time.Duration
 	statusCode int
 	body       []byte
 	headers    map[string]string
@@ -14,10 +18,24 @@ type Response struct {
 
 //NewResponse creates a new response from the definition
 func NewResponse(assetPath string, definition ResponseDefinition) Response {
+	wait := time.Nanosecond * 0
+	if definition.Slowness != nil && definition.Slowness.Happened() {
+		wait, _ = parser.ParseInterval(5*time.Second, definition.Slowness.Duration)
+	}
+
+	if definition.Error != nil && definition.Error.Happened() {
+		return Response{
+			statusCode: definition.Error.StatusCode,
+			body:       []byte(`{"error": "yes"}`),
+			wait:       wait,
+		}
+	}
+
 	return Response{
 		statusCode: definition.BuildStatusCode(),
 		body:       definition.BuildBody(assetPath),
 		headers:    definition.BuildHeaders(),
+		wait:       wait,
 	}
 }
 
@@ -31,6 +49,8 @@ func NewDefaultResponse() Response {
 
 //Send return response
 func (r Response) Send(w http.ResponseWriter) {
+	time.Sleep(r.wait)
+
 	if r.statusCode > 0 {
 		w.WriteHeader(r.statusCode)
 	}

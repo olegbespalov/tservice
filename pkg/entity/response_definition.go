@@ -3,6 +3,7 @@ package entity
 import (
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"os"
 	"path/filepath"
 )
@@ -29,10 +30,20 @@ type Error struct {
 	StatusCode int `yaml:"status_code"`
 }
 
+//Happened check if error happened
+func (e Error) Happened() bool {
+	return rand.Intn(100) <= e.Chance
+}
+
 //Slowness define if response will be slow
 type Slowness struct {
-	Chance int
-	Time   string
+	Chance   int
+	Duration string
+}
+
+//Happened check if slowness happened
+func (s Slowness) Happened() bool {
+	return rand.Intn(100) <= s.Chance
 }
 
 // Fit check if response can be used for the request
