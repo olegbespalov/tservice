@@ -69,7 +69,7 @@ func configModified() time.Time {
 	return info.ModTime()
 }
 
-func (s service) AssetPath() string {
+func (s *service) AssetPath() string {
 	return s.assetsPath
 }
 
@@ -86,6 +86,6 @@ func (s *service) Config() entity.Config {
 	return s.cfg
 }
 
-func (s service) ResponseDefinition() map[string]entity.ResponseDefinition {
+func (s *service) ResponseDefinition() map[string]entity.ResponseDefinition {
 	return s.Config().ResponseDefinitions
 }
