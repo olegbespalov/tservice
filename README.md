@@ -14,7 +14,7 @@ It also mounts the `configs` and `assets` folders where you can configure and pu
 # Configuration
 
 Example of the config.yml file:
-`
+```
 responses:
    response1:
       path: /lorem/ipsum
@@ -34,7 +34,7 @@ responses:
       error:
          chance: 10
          status_code: 500
-`      
+```      
 
 In that example, we defined three possible responses.
 
