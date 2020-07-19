@@ -10,16 +10,15 @@ import (
 
 //ResponseDefinition service response
 type ResponseDefinition struct {
-	Method     string
-	Path       string
-	StatusCode int `yaml:"status_code"`
+	Method string
+	Path   string
 
-	Body []byte
-
+	StatusCode   int `yaml:"status_code"`
 	Response     string
 	ResponseFile string `yaml:"response_file"`
+	Body         []byte
+	Headers      map[string]string
 
-	Headers  map[string]string
 	Error    *Error
 	Slowness *Slowness
 }

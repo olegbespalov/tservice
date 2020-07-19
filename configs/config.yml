@@ -23,4 +23,4 @@ responses:
       response_file: lorem.json
       error:
          chance: 10
-         status_code: 500
+         status_code: 500   
