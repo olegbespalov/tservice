@@ -5,6 +5,8 @@
 *.so
 *.dylib
 bin/*
+assets/*
+configs/*
 
 # Test binary, built with `go test -c`
 *.test
