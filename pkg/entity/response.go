@@ -42,6 +42,7 @@ func NewResponse(assetPath string, definition ResponseDefinition) Response {
 //NewDefaultResponse creates a default response
 func NewDefaultResponse() Response {
 	return Response{
+		wait:       0 * time.Nanosecond,
 		statusCode: http.StatusOK,
 		body:       []byte(`{"deafult": "yes"}`),
 	}
@@ -59,4 +60,24 @@ func (r Response) Send(w http.ResponseWriter) {
 	if err != nil {
 		log.Printf("ERR during response write: %s", err.Error())
 	}
+}
+
+//StatusCode http status code of the response
+func (r Response) StatusCode() int {
+	return r.statusCode
+}
+
+//Body of the response
+func (r Response) Body() []byte {
+	return r.body
+}
+
+//Headers of the response
+func (r Response) Headers() map[string]string {
+	return r.headers
+}
+
+//Wait before responding
+func (r Response) Wait() time.Duration {
+	return r.wait
 }

@@ -4,7 +4,10 @@ import (
 	"flag"
 	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
+	"sync"
+	"time"
 
 	"github.com/olegbespalov/tservice/pkg/entity"
 	"gopkg.in/yaml.v2"
@@ -27,12 +30,16 @@ func init() {
 type service struct {
 	cfg        entity.Config
 	assetsPath string
+	modified   time.Time
+
+	mu sync.Mutex
 }
 
 //NewService creates dummy config service
 func NewService() UseCase {
-	return service{
+	return &service{
 		cfg:        parseConfig(),
+		modified:   configModified(),
 		assetsPath: assetsPath,
 	}
 }
@@ -53,14 +60,32 @@ func parseConfig() entity.Config {
 	return cfg
 }
 
+func configModified() time.Time {
+	info, err := os.Stat(filepath.Clean(configFile))
+	if err != nil {
+		log.Fatalf("config file isn't readable: %s\n", err.Error())
+	}
+
+	return info.ModTime()
+}
+
 func (s service) AssetPath() string {
 	return s.assetsPath
 }
 
-func (s service) Config() entity.Config {
+func (s *service) Config() entity.Config {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	current := configModified()
+	if s.modified != current {
+		s.cfg = parseConfig()
+		s.modified = current
+	}
+
 	return s.cfg
 }
 
 func (s service) ResponseDefinition() map[string]entity.ResponseDefinition {
-	return s.cfg.ResponseDefinitions
+	return s.Config().ResponseDefinitions
 }
