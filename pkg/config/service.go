@@ -25,13 +25,15 @@ func init() {
 }
 
 type service struct {
-	cfg entity.Config
+	cfg        entity.Config
+	assetsPath string
 }
 
 //NewService creates dummy config service
 func NewService() UseCase {
 	return service{
-		cfg: parseConfig(),
+		cfg:        parseConfig(),
+		assetsPath: assetsPath,
 	}
 }
 
@@ -48,15 +50,17 @@ func parseConfig() entity.Config {
 		log.Fatalf("error: %v", err)
 	}
 
-	cfg.Load(assetsPath)
-
 	return cfg
+}
+
+func (s service) AssetPath() string {
+	return s.assetsPath
 }
 
 func (s service) Config() entity.Config {
 	return s.cfg
 }
 
-func (s service) Responses() map[string]entity.Response {
-	return s.cfg.Responses
+func (s service) ResponseDefinition() map[string]entity.ResponseDefinition {
+	return s.cfg.ResponseDefinitions
 }

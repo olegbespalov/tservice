@@ -39,4 +39,7 @@ COPY --from=builder /bin/app /bin/app
 
 USER appuser:appuser
 
+VOLUME [ "/configs"]
+VOLUME [ "/assets" ]
+
 ENTRYPOINT ["/bin/app"]

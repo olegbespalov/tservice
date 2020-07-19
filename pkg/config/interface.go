@@ -4,6 +4,7 @@ import "github.com/olegbespalov/tservice/pkg/entity"
 
 //UseCase config service
 type UseCase interface {
+	AssetPath() string
 	Config() entity.Config
-	Responses() map[string]entity.Response
+	ResponseDefinition() map[string]entity.ResponseDefinition
 }
