@@ -6,8 +6,12 @@ services:
       build: .
       ports:
          - "8080:8080"
+      volumes:
+         - ./configs:/configs
+         - ./assets:/assets
       networks:
          app_net:
+      entrypoint: ["/bin/app", "-config", "/configs/config.yml", "-assets", "/assets"]
 
 networks:
    app_net:
