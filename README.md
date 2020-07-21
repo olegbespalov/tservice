@@ -17,7 +17,7 @@ It also mounts the `configs` and `assets` folders where you can configure and pu
 
 Example of the config.yml file:
 
-```
+```yaml
 responses:
    response1:
       path: /lorem/ipsum
