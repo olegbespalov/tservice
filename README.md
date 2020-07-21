@@ -9,6 +9,8 @@ By default, it returns a status 200 for any request + dumps a request into stdou
 The easiest way to use the TService is to run it with the docker-compose:
 `$ docker-compose up`
 
+A full example located in the repository [olegbespalov/tservice-example](https://github.com/olegbespalov/tservice-example).
+
 It also mounts the `configs` and `assets` folders where you can configure and put your responses.
 
 # Configuration
