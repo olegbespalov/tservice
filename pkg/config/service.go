@@ -2,6 +2,7 @@ package config
 
 import (
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -57,6 +58,10 @@ func parseConfig() entity.Config {
 		log.Fatalf("error: %v", err)
 	}
 
+	for _, v := range cfg.ResponseRules {
+		fmt.Printf("Loaded rule: %s\n", v)
+	}
+
 	return cfg
 }
 
@@ -86,6 +91,6 @@ func (s *service) Config() entity.Config {
 	return s.cfg
 }
 
-func (s *service) ResponseDefinition() map[string]entity.ResponseDefinition {
-	return s.Config().ResponseDefinitions
+func (s *service) ResponseRules() map[string]entity.ResponseRules {
+	return s.Config().ResponseRules
 }
