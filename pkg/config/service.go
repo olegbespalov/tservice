@@ -2,7 +2,6 @@ package config
 
 import (
 	"flag"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -56,10 +55,6 @@ func parseConfig() entity.Config {
 	err = yaml.Unmarshal(data, &cfg)
 	if err != nil {
 		log.Fatalf("error: %v", err)
-	}
-
-	for _, v := range cfg.ResponseRules {
-		fmt.Printf("Loaded rule: %s\n", v)
 	}
 
 	return cfg
