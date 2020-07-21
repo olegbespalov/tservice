@@ -9,28 +9,34 @@ By default, it returns a status 200 for any request + dumps a request into stdou
 The easiest way to use the TService is to run it with the docker-compose:
 `$ docker-compose up`
 
+A full example located in the repository [olegbespalov/tservice-example](https://github.com/olegbespalov/tservice-example).
+
 It also mounts the `configs` and `assets` folders where you can configure and put your responses.
 
 # Configuration
 
 Example of the config.yml file:
-```
+
+```yaml
 responses:
    response1:
       path: /lorem/ipsum
-      status_code: 404
-      response: '{"resource":"not-found"}'
+      definition:
+         status_code: 404
+         response: '{"resource":"not-found"}'
    response2:
       path: /lorem
-      status_code: 200
-      response_file: lorem.json
+      definition:
+         status_code: 200
+         response_file: lorem.json
       slowness:
          chance: 30
          duration: 5s
    response3:
       path: /lorem/error
-      status_code: 200
-      response_file: lorem.json
+      definition:
+         status_code: 200
+         response_file: lorem.json
       error:
          chance: 10
          status_code: 500

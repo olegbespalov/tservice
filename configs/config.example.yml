@@ -1,26 +1,31 @@
 responses:
    lorem:
       path: /path/url/xxx
-      status_code: 200
-      response: '{"hey": "you"}'
-      headers: 
-         X-123: hhhh
-         X-222: 32111
+      definition:
+         status_code: 200
+         response: '{"hey": "you"}'
+         headers: 
+            - X-123:hhhh
+            - X-222:32111
    lorem2:
       path: /xx-yyy/some
-      status_code: 404
-      response: '{"resource":"not-found"}'
+      definition:
+         status_code: 404
+         response: '{"resource":"not-found"}'
    lorem3:
       path: /lorem
-      status_code: 200
-      response_file: lorem.json
+      definition:
+         status_code: 200
+         response_file: lorem.json
       slowness:
          chance: 30
          duration: 5s
    lorem5:
       path: /loremerror
-      status_code: 200
-      response_file: lorem.json
+      definition:
+         status_code: 200
+         response_file: lorem.json
       error:
          chance: 10
-         status_code: 500   
+         definition:
+            status_code: 500   

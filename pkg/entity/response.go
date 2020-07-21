@@ -17,24 +17,24 @@ type Response struct {
 }
 
 //NewResponse creates a new response from the definition
-func NewResponse(assetPath string, definition ResponseDefinition) Response {
+func NewResponse(assetPath string, rule ResponseRules) Response {
 	wait := time.Nanosecond * 0
-	if definition.Slowness != nil && definition.Slowness.Happened() {
-		wait, _ = parser.ParseInterval(5*time.Second, definition.Slowness.Duration)
+	if rule.Slowness != nil && rule.Slowness.Happened() {
+		wait, _ = parser.ParseInterval(5*time.Second, rule.Slowness.Duration)
 	}
 
-	if definition.Error != nil && definition.Error.Happened() {
+	if rule.Error != nil && rule.Error.Happened() {
 		return Response{
-			statusCode: definition.Error.StatusCode,
+			statusCode: rule.Error.Definition.StatusCode,
 			body:       []byte(`{"error": "yes"}`),
 			wait:       wait,
 		}
 	}
 
 	return Response{
-		statusCode: definition.BuildStatusCode(),
-		body:       definition.BuildBody(assetPath),
-		headers:    definition.BuildHeaders(),
+		statusCode: rule.BuildStatusCode(),
+		body:       rule.BuildBody(assetPath),
+		headers:    rule.BuildHeaders(),
 		wait:       wait,
 	}
 }
@@ -51,6 +51,12 @@ func NewDefaultResponse() Response {
 //Send return response
 func (r Response) Send(w http.ResponseWriter) {
 	time.Sleep(r.wait)
+
+	if len(r.headers) > 0 {
+		for k, v := range r.headers {
+			w.Header().Set(k, v)
+		}
+	}
 
 	if r.statusCode > 0 {
 		w.WriteHeader(r.statusCode)

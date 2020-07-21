@@ -86,6 +86,6 @@ func (s *service) Config() entity.Config {
 	return s.cfg
 }
 
-func (s *service) ResponseDefinition() map[string]entity.ResponseDefinition {
-	return s.Config().ResponseDefinitions
+func (s *service) ResponseRules() map[string]entity.ResponseRules {
+	return s.Config().ResponseRules
 }
