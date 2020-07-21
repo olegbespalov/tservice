@@ -20,9 +20,9 @@ func NewService(cfg config.UseCase) UseCase {
 
 //BestResponse find the best response
 func (s service) BestResponse(r *http.Request) entity.Response {
-	for _, responseDefinition := range s.cfg.Config().ResponseDefinitions {
-		if responseDefinition.Fit(r.Method, r.RequestURI) {
-			return entity.NewResponse(s.cfg.AssetPath(), responseDefinition)
+	for _, responseRule := range s.cfg.Config().ResponseRules {
+		if responseRule.Fit(r.Method, r.RequestURI) {
+			return entity.NewResponse(s.cfg.AssetPath(), responseRule)
 		}
 	}
 
