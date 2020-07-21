@@ -52,14 +52,14 @@ func NewDefaultResponse() Response {
 func (r Response) Send(w http.ResponseWriter) {
 	time.Sleep(r.wait)
 
-	if r.statusCode > 0 {
-		w.WriteHeader(r.statusCode)
-	}
-
 	if len(r.headers) > 0 {
 		for k, v := range r.headers {
 			w.Header().Set(k, v)
 		}
+	}
+
+	if r.statusCode > 0 {
+		w.WriteHeader(r.statusCode)
 	}
 
 	_, err := w.Write(r.body)
