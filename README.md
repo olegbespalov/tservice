@@ -14,23 +14,27 @@ It also mounts the `configs` and `assets` folders where you can configure and pu
 # Configuration
 
 Example of the config.yml file:
+
 ```
 responses:
    response1:
       path: /lorem/ipsum
-      status_code: 404
-      response: '{"resource":"not-found"}'
+      definition:
+         status_code: 404
+         response: '{"resource":"not-found"}'
    response2:
       path: /lorem
-      status_code: 200
-      response_file: lorem.json
+      definition:
+         status_code: 200
+         response_file: lorem.json
       slowness:
          chance: 30
          duration: 5s
    response3:
       path: /lorem/error
-      status_code: 200
-      response_file: lorem.json
+      definition:
+         status_code: 200
+         response_file: lorem.json
       error:
          chance: 10
          status_code: 500
