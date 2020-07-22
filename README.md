@@ -17,7 +17,7 @@ Installation and usage
 
 To install it, run:
 
-   docker-compose up
+    docker-compose up
 
 You can also include the service in your existing compose using [docker hub's image](https://hub.docker.com/repository/docker/letniy/tservice)
 
@@ -25,20 +25,19 @@ You can also include the service in your existing compose using [docker hub's im
 tservice:
    image: docker.io/letniy/tservice:latest
    ports:
-      - "8080:8080"
+      - "8085:8085"
    volumes:
       - ./configs:/configs
-      - ./responses:/assets
    networks:
       app_net:
-   entrypoint: ["/bin/app", "-config", "/configs/config.yml", "-assets", "/assets"]
+   entrypoint: ["/bin/app", "-config", "/configs/config.yml", "-responsePath", "/configs/responses", "-port", "8085"]
 ```
 
 A full example located in the repository [olegbespalov/tservice-example](https://github.com/olegbespalov/tservice-example).
 
 or you can run locally if you have go installed
 
-   make app_build && bin/tservice --config=configs/config.example.yml --assets=assets
+    make app_build && bin/tservice --config=configs/config.example.yml --responsePath=configs/responses --port=8085
 
 Configuration
 -------------
