@@ -22,7 +22,7 @@ func NewService(cfg config.UseCase) UseCase {
 func (s service) BestResponse(r *http.Request) entity.Response {
 	for _, responseRule := range s.cfg.Config().ResponseRules {
 		if responseRule.Fit(r.Method, r.RequestURI) {
-			return entity.NewResponse(s.cfg.AssetPath(), responseRule)
+			return entity.NewResponse(s.cfg.ResponsesPath(), responseRule)
 		}
 	}
 

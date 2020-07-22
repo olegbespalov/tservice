@@ -1,18 +1,13 @@
 responses:
-   lorem:
-      path: /path/url/xxx
+   response1:
+      path: /lorem/ipsum
       definition:
          status_code: 200
-         response: '{"hey": "you"}'
-         headers: 
-            - X-123:hhhh
-            - X-222:32111
-   lorem2:
-      path: /xx-yyy/some
-      definition:
-         status_code: 404
-         response: '{"resource":"not-found"}'
-   lorem3:
+         response: '{"hello":"TService"}'
+         headers:
+            - Content-Type:application/json
+            - x-version:123
+   response2:
       path: /lorem
       definition:
          status_code: 200
@@ -20,12 +15,13 @@ responses:
       slowness:
          chance: 30
          duration: 5s
-   lorem5:
-      path: /loremerror
+   response3:
+      path: /lorem/error
       definition:
          status_code: 200
          response_file: lorem.json
+         headers:
+            - Content-Type:application/json
       error:
          chance: 10
-         definition:
-            status_code: 500   
+         status_code: 500

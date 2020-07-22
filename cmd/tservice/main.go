@@ -9,11 +9,10 @@ import (
 	"github.com/olegbespalov/tservice/pkg/response"
 )
 
-var port = "8080"
-
 func main() {
-	responsesService := response.NewService(config.NewService())
+	cfg := config.NewService()
+	responsesService := response.NewService(cfg)
 
-	log.Println("TService is starting on port " + port)
-	log.Fatal(http.ListenAndServe(":"+port, handler.NewDefaultHandler(responsesService)))
+	log.Println("TService is starting on port " + cfg.Port())
+	log.Fatal(http.ListenAndServe(":"+cfg.Port(), handler.NewDefaultHandler(responsesService)))
 }

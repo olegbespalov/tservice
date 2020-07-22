@@ -5,8 +5,9 @@
 *.so
 *.dylib
 bin/*
-assets/*
 configs/*
+!configs/responses
+demo.yml
 
 # Test binary, built with `go test -c`
 *.test

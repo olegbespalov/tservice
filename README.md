@@ -1,19 +1,49 @@
 # TService (a.k.a test-service)
 
-It's a dummy service that helps to easily develop a new API that uses third-party API.
+Introduction
+------------
 
-By default, it returns a status 200 for any request + dumps a request into stdout.
+The TService is the test-service, a fake API that you can use to mock third-party API. It's developed lightweight, has no dependency on any programming language or framework.  It can define service slowness emulate service errors. Config or responses changes on the fly without any service restarting.
 
-# Usage
+<p align="center"><img src="/assets/demo.gif?raw=true"/></p>
 
-The easiest way to use the TService is to run it with the docker-compose:
-`$ docker-compose up`
+Compatibility
+-------------
+
+The TService can be used as go application that compiled on a host machine, docker-compose or directly from the docker hub image.
+
+Installation and usage
+-------------
+
+To install it, run:
+
+   docker-compose up
+
+You can also include the service in your existing compose using [docker hub's image](https://hub.docker.com/repository/docker/letniy/tservice)
+
+```yml
+tservice:
+   image: docker.io/letniy/tservice:latest
+   ports:
+      - "8080:8080"
+   volumes:
+      - ./configs:/configs
+      - ./responses:/assets
+   networks:
+      app_net:
+   entrypoint: ["/bin/app", "-config", "/configs/config.yml", "-assets", "/assets"]
+```
 
 A full example located in the repository [olegbespalov/tservice-example](https://github.com/olegbespalov/tservice-example).
 
-It also mounts the `configs` and `assets` folders where you can configure and put your responses.
+or you can run locally if you have go installed
 
-# Configuration
+   make app_build && bin/tservice --config=configs/config.example.yml --assets=assets
+
+Configuration
+-------------
+
+An example of the configuration you can find in the configs directory.
 
 Example of the config.yml file:
 
@@ -22,8 +52,8 @@ responses:
    response1:
       path: /lorem/ipsum
       definition:
-         status_code: 404
-         response: '{"resource":"not-found"}'
+         status_code: 200
+         response: '{"hello":"TService"}'
    response2:
       path: /lorem
       definition:
@@ -42,24 +72,7 @@ responses:
          status_code: 500
 ```      
 
-In that example, we defined three possible responses.
+License
+-------
 
-### response1
-
-It returns `{"resource":"not-found"}` when tservice will be requested by the path `/lorem/ipsum`
-
-### response2
-
-It returns the content of the file `lorem.json` that is located in `/assets` folder when TService will be requested by the path `/lorem`.
-
-With the change 30 of 100 it will send a response with a timeout of the 5 seconds.
-
-### response3
-
-It returns the content of the file `lorem.json` that is located in `/assets` folder when TService will be requested by the path `/lorem/error`.
-
-With the change 10 of 100 it will send a response with 500 status code as the error.
-
-# Example of the build
-
-`$ make app_build && bin/tservice --config=configs/config.yml --assets=assets`
+The TService package is licensed under the MIT. Please see the LICENSE file for details.

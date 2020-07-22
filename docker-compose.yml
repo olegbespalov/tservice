@@ -5,13 +5,12 @@ services:
       container_name: tservice
       build: .
       ports:
-         - "8080:8080"
+         - "8085:8085"
       volumes:
-         - ./configs:/configs
-         - ./assets:/assets
+         - ./configs:/configs         
       networks:
          app_net:
-      entrypoint: ["/bin/app", "-config", "/configs/config.yml", "-assets", "/assets"]
+      entrypoint: ["/bin/app", "-config", "/configs/config.yml", "-responsePath", "/configs/responses", "-port", "8085"]
 
 networks:
    app_net:

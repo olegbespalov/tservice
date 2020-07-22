@@ -14,23 +14,30 @@ import (
 )
 
 var configFile string
-var assetsPath string
+var responsesPath string
+var port string
 
 func init() {
 	flag.StringVar(&configFile, "config", "", "a path to the config file")
-	flag.StringVar(&assetsPath, "assets", "", "an asset folder where we can find file responses")
+	flag.StringVar(&responsesPath, "responsePath", "", "a folder where we can find file responses")
+	flag.StringVar(&port, "port", "", "a service port")
 
 	flag.Parse()
 
 	if configFile == "" {
 		log.Fatalln("You should provide a config file")
 	}
+
+	if port == "" {
+		log.Fatalln("You should provide a port")
+	}
 }
 
 type service struct {
-	cfg        entity.Config
-	assetsPath string
-	modified   time.Time
+	port          string
+	cfg           entity.Config
+	responsesPath string
+	modified      time.Time
 
 	mu sync.Mutex
 }
@@ -38,9 +45,10 @@ type service struct {
 //NewService creates dummy config service
 func NewService() UseCase {
 	return &service{
-		cfg:        parseConfig(),
-		modified:   configModified(),
-		assetsPath: assetsPath,
+		port:          port,
+		cfg:           parseConfig(),
+		modified:      configModified(),
+		responsesPath: responsesPath,
 	}
 }
 
@@ -69,8 +77,8 @@ func configModified() time.Time {
 	return info.ModTime()
 }
 
-func (s *service) AssetPath() string {
-	return s.assetsPath
+func (s *service) ResponsesPath() string {
+	return s.responsesPath
 }
 
 func (s *service) Config() entity.Config {
@@ -88,4 +96,8 @@ func (s *service) Config() entity.Config {
 
 func (s *service) ResponseRules() map[string]entity.ResponseRules {
 	return s.Config().ResponseRules
+}
+
+func (s *service) Port() string {
+	return s.port
 }

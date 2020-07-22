@@ -17,7 +17,7 @@ type Response struct {
 }
 
 //NewResponse creates a new response from the definition
-func NewResponse(assetPath string, rule ResponseRules) Response {
+func NewResponse(path string, rule ResponseRules) Response {
 	wait := time.Nanosecond * 0
 	if rule.Slowness != nil && rule.Slowness.Happened() {
 		wait, _ = parser.ParseInterval(5*time.Second, rule.Slowness.Duration)
@@ -33,7 +33,7 @@ func NewResponse(assetPath string, rule ResponseRules) Response {
 
 	return Response{
 		statusCode: rule.BuildStatusCode(),
-		body:       rule.BuildBody(assetPath),
+		body:       rule.BuildBody(path),
 		headers:    rule.BuildHeaders(),
 		wait:       wait,
 	}
