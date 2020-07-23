@@ -5,7 +5,7 @@ Introduction
 
 The TService is the test-service, a fake API that you can use to mock third-party API. It's developed lightweight, has no dependency on any programming language or framework.  It can define service slowness emulate service errors. Config or responses changes on the fly without any service restarting.
 
-<p align="center"><img src="/assets/demo.gif?raw=true"/></p>
+<p align="center"><img src="/assets/usage.gif?raw=true"/></p>
 
 Compatibility
 -------------
