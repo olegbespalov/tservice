@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/olegbespalov/tservice/pkg/config"
 	"github.com/olegbespalov/tservice/pkg/entity"
@@ -135,8 +136,6 @@ responses:
 }
 
 func TestConfigModify(t *testing.T) {
-	t.Skip("skipping for now")
-
 	file, err := ioutil.TempFile("/tmp", "prefix")
 	if err != nil {
 		log.Fatal(err)
@@ -178,6 +177,8 @@ responses:
    `))
 
 	assert.Equal(t, nil, err)
+
+	time.Sleep(1 * time.Second)
 
 	assert.Equal(t, 1, len(cfg.Rules()))
 	rule, ok = cfg.Rules()["response1"]
