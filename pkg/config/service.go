@@ -1,7 +1,6 @@
 package config
 
 import (
-	"flag"
 	"io/ioutil"
 	"log"
 	"os"
@@ -13,28 +12,9 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var configFile string
-var responsesPath string
-var port string
-
-func init() {
-	flag.StringVar(&configFile, "config", "", "a path to the config file")
-	flag.StringVar(&responsesPath, "responsePath", "", "a folder where we can find file responses")
-	flag.StringVar(&port, "port", "", "a service port")
-
-	flag.Parse()
-
-	if configFile == "" {
-		log.Fatalln("You should provide a config file")
-	}
-
-	if port == "" {
-		log.Fatalln("You should provide a port")
-	}
-}
-
 type service struct {
 	port          string
+	configFile    string
 	cfg           entity.Config
 	responsesPath string
 	modified      time.Time
@@ -43,16 +23,17 @@ type service struct {
 }
 
 //NewService creates dummy config service
-func NewService() UseCase {
+func NewService(port, configFile, responsesPath string) UseCase {
 	return &service{
+		configFile:    configFile,
 		port:          port,
-		cfg:           parseConfig(),
-		modified:      configModified(),
+		cfg:           parseConfig(configFile),
+		modified:      configModified(configFile),
 		responsesPath: responsesPath,
 	}
 }
 
-func parseConfig() entity.Config {
+func parseConfig(configFile string) entity.Config {
 	data, err := ioutil.ReadFile(filepath.Clean(configFile))
 	if err != nil {
 		log.Fatalf("config file isn't readable: %s\n", err.Error())
@@ -68,7 +49,7 @@ func parseConfig() entity.Config {
 	return cfg
 }
 
-func configModified() time.Time {
+func configModified(configFile string) time.Time {
 	info, err := os.Stat(filepath.Clean(configFile))
 	if err != nil {
 		log.Fatalf("config file isn't readable: %s\n", err.Error())
@@ -87,9 +68,9 @@ func (s *service) config() entity.Config {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	current := configModified()
+	current := configModified(s.configFile)
 	if s.modified != current {
-		s.cfg = parseConfig()
+		s.cfg = parseConfig(s.configFile)
 		s.modified = current
 	}
 

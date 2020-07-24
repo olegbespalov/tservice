@@ -26,12 +26,12 @@ func NewResponse(path string, rule Rule) Response {
 	}
 }
 
-//NewDefaultResponse creates a default response
-func NewDefaultResponse() Response {
+//NewDefinitionResponse creates a default response
+func NewDefinitionResponse(definition Definition) Response {
 	return Response{
 		wait:       0 * time.Nanosecond,
-		statusCode: http.StatusOK,
-		body:       []byte(`{"deafult": "yes"}`),
+		statusCode: definition.BuildStatusCode(),
+		body:       []byte(definition.Response),
 	}
 }
 

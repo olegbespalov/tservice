@@ -1,7 +1,7 @@
 .EXPORT_ALL_VARIABLES:
 GO111MODULE=on
 GOCMDWITHOUTMODULES = GO111MODULE="off" GOFLAGS="" $(GOCMD)
-TEST_RESULTS_DIR=./test/results
+TEST_RESULTS_DIR=./data
 
 GOCMD = $(shell which go)
 GOFMT = $(shell which gofmt)

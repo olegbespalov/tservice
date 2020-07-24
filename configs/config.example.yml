@@ -1,3 +1,14 @@
+default_definitions:
+   response: # response that will be served by default
+      status_code: 200
+      response: '{"message":"default"}'
+      headers:
+         - Content-Type:application/json
+   error: # error that will be served by default if no definition in error
+      status_code: 500
+      response: '{"error":"default"}'
+      headers:
+         - Content-Type:application/json   
 responses:
    response1:
       path: /lorem/ipsum
@@ -24,4 +35,6 @@ responses:
             - Content-Type:application/json
       error:
          chance: 10
-         status_code: 500
+         definition:
+            status_code: 500
+            response: '{"error":"hey"}'

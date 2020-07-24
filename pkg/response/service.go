@@ -26,7 +26,7 @@ func (s service) BestResponse(r *http.Request) entity.Response {
 		}
 	}
 
-	return entity.NewDefaultResponse()
+	return entity.NewDefinitionResponse(s.DefaultDefinition())
 }
 
 //DefaultDefinition return default definition
