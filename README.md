@@ -49,7 +49,7 @@ Example of the config.yml file:
 ```yaml
 responses:
    response1:
-      path: /lorem/ipsum
+      path: /lorem/([0-9]+)/ipsum
       definition:
          status_code: 200
          response: '{"hello":"TService"}'

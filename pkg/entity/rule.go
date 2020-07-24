@@ -2,6 +2,8 @@ package entity
 
 import (
 	"fmt"
+	"regexp"
+	"strings"
 	"time"
 )
 
@@ -16,9 +18,23 @@ type Rule struct {
 	Slowness *Slowness
 }
 
+//IsRegExp check if rule regexp
+func (r Rule) isRegExp() bool {
+	return strings.ContainsAny(r.Path, "()")
+}
+
+func (r Rule) match(path string) bool {
+	match, err := regexp.MatchString("^"+r.Path+"$", path)
+	if err != nil {
+		return false
+	}
+
+	return match
+}
+
 //Fit check if response can be used for the request
 func (r Rule) Fit(method, path string) bool {
-	return r.Path == path && (len(r.Method) == 0 || r.Method == method)
+	return (r.Path == path || (r.isRegExp() && r.match(path))) && (len(r.Method) == 0 || r.Method == method)
 }
 
 //ChoseDefinition chose between error an normal definition

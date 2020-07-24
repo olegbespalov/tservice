@@ -10,6 +10,11 @@ default_definitions:
       headers:
          - Content-Type:application/json   
 responses:
+   response0:
+      path: /lorem/(.+)/news
+      definition:
+         status_code: 200
+         response: '{"hello":"matched"}'
    response1:
       path: /lorem/ipsum
       definition:

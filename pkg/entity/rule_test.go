@@ -94,3 +94,30 @@ func TestNewResponse(t *testing.T) {
 		assert.Equal(t, data.expectedWait, res.Wait())
 	}
 }
+
+func TestFit(t *testing.T) {
+	r := entity.Rule{
+		Path: "/lorem/ipsum",
+	}
+
+	assert.Equal(t, false, r.Fit("POST", "/lorem/foo"))
+	assert.Equal(t, true, r.Fit("POST", "/lorem/ipsum"))
+	assert.Equal(t, true, r.Fit("GET", "/lorem/ipsum"))
+}
+
+func TestFitRegExp(t *testing.T) {
+	r := entity.Rule{
+		Path: "/lorem/([0-9]+)/foo",
+	}
+
+	assert.Equal(t, true, r.Fit("POST", "/lorem/12/foo"))
+	assert.Equal(t, false, r.Fit("POST", "/lorem/12/foo/other"))
+	assert.Equal(t, false, r.Fit("POST", "/lorem/abc/foo"))
+
+	r = entity.Rule{
+		Path: "/lorem/(.+)/foo",
+	}
+
+	assert.Equal(t, true, r.Fit("POST", "/lorem/12/foo"))
+	assert.Equal(t, true, r.Fit("POST", "/lorem/abc/foo"))
+}

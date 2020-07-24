@@ -24,6 +24,7 @@ func (s service) BestResponse(r *http.Request) entity.Response {
 		if responseRule.Fit(r.Method, r.RequestURI) {
 			return entity.NewResponse(s.cfg.ResponsesPath(), responseRule)
 		}
+
 	}
 
 	return entity.NewDefinitionResponse(s.DefaultDefinition())
