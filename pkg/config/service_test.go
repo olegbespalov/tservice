@@ -141,7 +141,7 @@ func TestConfigModify(t *testing.T) {
 	}
 	defer os.Remove(file.Name())
 
-	_, _ = file.Write([]byte(`
+	_, err = file.Write([]byte(`
 responses:
    response1:
       path: /lorem/ipsum
@@ -152,6 +152,8 @@ responses:
             - Content-Type:application/json
             - x-version:123      
    `))
+
+	assert.Equal(t, nil, err)
 
 	fileName := file.Name()
 
@@ -164,7 +166,7 @@ responses:
 	assert.Equal(t, "{\"hello\":\"TService\"}", rule.Definition.Response)
 	assert.Equal(t, 2, len(rule.Definition.Headers))
 
-	_, _ = file.Write([]byte(`
+	_, err = file.Write([]byte(`
 responses:
    response1:
       path: /lorem/ipsum
@@ -172,6 +174,8 @@ responses:
          status_code: 200
          response: '{"hello":"changed"}'         
    `))
+
+	assert.Equal(t, nil, err)
 
 	assert.Equal(t, 1, len(cfg.Rules()))
 	rule, ok = cfg.Rules()["response1"]
