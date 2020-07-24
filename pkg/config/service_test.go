@@ -155,6 +155,7 @@ responses:
    `))
 
 	assert.Equal(t, nil, err)
+	time.Sleep(1 * time.Second)
 
 	fileName := file.Name()
 
@@ -177,8 +178,6 @@ responses:
    `))
 
 	assert.Equal(t, nil, err)
-
-	time.Sleep(1 * time.Second)
 
 	assert.Equal(t, 1, len(cfg.Rules()))
 	rule, ok = cfg.Rules()["response1"]
