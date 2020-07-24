@@ -3,7 +3,7 @@
 Introduction
 ------------
 
-The TService is the test-service, a fake API that you can use to mock third-party API. It's developed lightweight, has no dependency on any programming language or framework.  It can define service slowness emulate service errors. Config or responses changes on the fly without any service restarting.
+The TService is the test-service, a fake API that you can use to mock third-party API. It's developed lightweight, has no dependency on any programming language or framework. It can define service slowness emulate service errors. A config or a response changes on the fly without any service restarting.
 
 <p align="center"><img src="/assets/usage.gif?raw=true"/></p>
 
@@ -15,7 +15,7 @@ The TService can be used as go application that compiled on a host machine, dock
 Installation and usage
 -------------
 
-To install it, run:
+To launch it, run:
 
     docker-compose up
 

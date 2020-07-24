@@ -2,5 +2,6 @@ package entity
 
 // Config for the service
 type Config struct {
-	ResponseRules map[string]ResponseRules `yaml:"responses"`
+	Default map[string]Definition `yaml:"default_definitions"`
+	Rules   map[string]Rule       `yaml:"responses"`
 }

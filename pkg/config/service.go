@@ -77,11 +77,13 @@ func configModified() time.Time {
 	return info.ModTime()
 }
 
+//ResponsesPath path to the responses
 func (s *service) ResponsesPath() string {
 	return s.responsesPath
 }
 
-func (s *service) Config() entity.Config {
+//config service config
+func (s *service) config() entity.Config {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -94,10 +96,30 @@ func (s *service) Config() entity.Config {
 	return s.cfg
 }
 
-func (s *service) ResponseRules() map[string]entity.ResponseRules {
-	return s.Config().ResponseRules
+//Rules service rules
+func (s *service) Rules() map[string]entity.Rule {
+	return s.config().Rules
 }
 
+//Port service port
 func (s *service) Port() string {
 	return s.port
+}
+
+//DefaultDefinition default definition
+func (s *service) DefaultDefinition() *entity.Definition {
+	if v, ok := s.config().Default["response"]; ok {
+		return &v
+	}
+
+	return nil
+}
+
+//DefaultError return default error if defined
+func (s *service) DefaultError() *entity.Definition {
+	if v, ok := s.config().Default["error"]; ok {
+		return &v
+	}
+
+	return nil
 }

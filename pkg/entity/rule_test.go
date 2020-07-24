@@ -11,7 +11,7 @@ import (
 func TestNewResponse(t *testing.T) {
 	testData := map[string]struct {
 		assetPath     string
-		responseRules entity.ResponseRules
+		responseRules entity.Rule
 
 		expectedStatusCode int
 		expectedBody       []byte
@@ -20,10 +20,10 @@ func TestNewResponse(t *testing.T) {
 	}{
 		"normal case": {
 			assetPath: "/assets",
-			responseRules: entity.ResponseRules{
+			responseRules: entity.Rule{
 				Method: "",
 				Path:   "/lorem/ipsum",
-				Definition: entity.ResponseDefinition{
+				Definition: entity.Definition{
 					StatusCode: 201,
 					Response:   "lorem ipsum",
 					Headers:    []string{},
@@ -32,13 +32,14 @@ func TestNewResponse(t *testing.T) {
 			expectedStatusCode: 201,
 			expectedBody:       []byte("lorem ipsum"),
 			expectedHeaders:    map[string]string{},
+			expectedWait:       0 * time.Second,
 		},
 		"error happans": {
 			assetPath: "/assets",
-			responseRules: entity.ResponseRules{
+			responseRules: entity.Rule{
 				Method: "",
 				Path:   "/lorem/ipsum",
-				Definition: entity.ResponseDefinition{
+				Definition: entity.Definition{
 					StatusCode: 201,
 					Response:   "lorem ipsum",
 					Headers:    []string{},
@@ -46,21 +47,22 @@ func TestNewResponse(t *testing.T) {
 
 				Error: &entity.Error{
 					Chance: 100,
-					Definition: entity.ResponseDefinition{
+					Definition: entity.Definition{
 						StatusCode: 501,
+						Response:   "{\"error\": \"yes\"}",
 					},
 				},
 			},
 			expectedStatusCode: 501,
 			expectedBody:       []byte(`{"error": "yes"}`),
-			expectedHeaders:    nil,
+			expectedHeaders:    map[string]string{},
 		},
 		"slowness happans": {
 			assetPath: "/assets",
-			responseRules: entity.ResponseRules{
+			responseRules: entity.Rule{
 				Method: "",
 				Path:   "/lorem/ipsum",
-				Definition: entity.ResponseDefinition{
+				Definition: entity.Definition{
 					StatusCode: 201,
 					Response:   "lorem ipsum",
 					Headers: []string{

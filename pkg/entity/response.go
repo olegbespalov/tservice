@@ -4,8 +4,6 @@ import (
 	"log"
 	"net/http"
 	"time"
-
-	"github.com/olegbespalov/tservice/internal/parser"
 )
 
 //Response represent what exactly will be returneds
@@ -17,25 +15,14 @@ type Response struct {
 }
 
 //NewResponse creates a new response from the definition
-func NewResponse(path string, rule ResponseRules) Response {
-	wait := time.Nanosecond * 0
-	if rule.Slowness != nil && rule.Slowness.Happened() {
-		wait, _ = parser.ParseInterval(5*time.Second, rule.Slowness.Duration)
-	}
-
-	if rule.Error != nil && rule.Error.Happened() {
-		return Response{
-			statusCode: rule.Error.Definition.StatusCode,
-			body:       []byte(`{"error": "yes"}`),
-			wait:       wait,
-		}
-	}
+func NewResponse(path string, rule Rule) Response {
+	definition := rule.ChoseDefinition()
 
 	return Response{
-		statusCode: rule.BuildStatusCode(),
-		body:       rule.BuildBody(path),
-		headers:    rule.BuildHeaders(),
-		wait:       wait,
+		statusCode: definition.BuildStatusCode(),
+		body:       definition.BuildBody(path),
+		headers:    definition.BuildHeaders(),
+		wait:       rule.Wait(),
 	}
 }
 
