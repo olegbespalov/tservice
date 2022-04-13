@@ -13,20 +13,20 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: [ '1.13', '1.14' ]
+        go: [ 1.17.x, 1.18.x ]
     name: Go ${{ matrix.go }} sample
     steps:
-      - uses: actions/checkout@v2
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v1
-        with:
-         version: v1.28
-      - uses: actions/checkout@v2
       - name: Setup go
         uses: actions/setup-go@v1
         with:
           go-version: ${{ matrix.go }}
+      - uses: actions/checkout@v2
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+         version: v1.45.2
+      - uses: actions/checkout@v2      
       - run: make code_test
